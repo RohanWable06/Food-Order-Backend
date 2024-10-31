@@ -23,7 +23,7 @@ const getFood = async (req, res) => {
 
     if (!food) {
       res
-        .status(200)
+        .status(404)
         .json({ success: true, msg: `${req.params.id} not found` });
     }
 
@@ -37,9 +37,9 @@ const getAllFood = async (req, res) => {
   try {
     const allFood = await food_items.find();
 
-    // if(!allFood){
-    //     res.status(200).json({success : true, msg : "No food available"})
-    // }
+    if (!allFood) {
+      res.status(404).json({ success: true, msg: "No food available" });
+    }
     res.status(200).json({ success: true, allFood });
   } catch (err) {
     res.status(500).json({ success: false, msg: "Internal Error" });
@@ -48,17 +48,17 @@ const getAllFood = async (req, res) => {
 
 const deleteFood = async (req, res) => {
   try {
-    const result = await food_items.findById(req.params.id);
+    const food = await food_items.findById(req.params.id);
 
-    if (!result) {
+    if (!food) {
       res
-        .status(200)
+        .status(404)
         .json({ success: false, msg: `No food item of ${req.params.id} id` });
     }
 
     await food_items.findByIdAndDelete(req.params.id);
 
-    res.status(200).json({ success: true, msg: `${result.name} food deleted` });
+    res.status(200).json({ success: true, msg: `${food.name} food deleted` });
   } catch (err) {
     res.status(500).json({ success: false, msg: "Intenal error" });
   }

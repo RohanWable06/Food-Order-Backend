@@ -1,5 +1,5 @@
 const express = require("express");
-const router = express.Router();
+const app = express.Router();
 const {
   addFood,
   getFood,
@@ -7,12 +7,12 @@ const {
   deleteFood,
 } = require("../Controller/Food");
 
-router.post("/addFood", addFood);
+app.post("/addFood", addFood);
 
-router.get("/getFood/:id", getFood);
+app.get("/getSingleFoodinfo/:id", getFood);
 
-router.get("/getFood", getAllFood);
+app.get("/getFoodinfo", getAllFood);
 
-router.delete("/deleteFood/:id", deleteFood);
+app.delete("/deleteFood/:id", deleteFood);
 
-module.exports = router;
+module.exports = app;

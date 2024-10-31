@@ -9,9 +9,9 @@ const {
 
 app.post("/createuser", newUser);
 
-app.get("/allUsers", getAllUsers);
+app.get("/getAllUsers", getAllUsers);
 
-app.get("/getUser/:id", getUser);
+app.get("/getSingleUser/:id", getUser);
 
 app.delete("/deleteUser/:id", deleteUser);
 
