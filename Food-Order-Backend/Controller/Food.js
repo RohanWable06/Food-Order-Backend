@@ -1,3 +1,4 @@
+const { query } = require("express");
 const { food_items } = require("../models/FoodItem");
 
 const addFood = async (req, res) => {
@@ -23,7 +24,7 @@ const getFood = async (req, res) => {
 
     if (!food) {
       res
-        .status(404)
+        .status(204)
         .json({ success: true, msg: `${req.params.id} not found` });
     }
 
@@ -38,7 +39,7 @@ const getAllFood = async (req, res) => {
     const allFood = await food_items.find();
 
     if (!allFood) {
-      res.status(404).json({ success: true, msg: "No food available" });
+      res.status(204).json({ success: true, msg: "No food available" });
     }
     res.status(200).json({ success: true, allFood });
   } catch (err) {
@@ -52,7 +53,7 @@ const deleteFood = async (req, res) => {
 
     if (!food) {
       res
-        .status(404)
+        .status(204)
         .json({ success: false, msg: `No food item of ${req.params.id} id` });
     }
 
@@ -64,4 +65,30 @@ const deleteFood = async (req, res) => {
   }
 };
 
-module.exports = { addFood, getFood, getAllFood, deleteFood };
+
+
+const searchFood = async (req,res)=>{
+  try{
+  const search = req.query.search;
+  console.log(search)
+  let query = {name : {$regex : `${search}`, $options: 'i'}};
+  const foodData = await food_items.find(query);
+   //console.log(foodData)
+  if (!foodData) {
+    
+    res
+      .status(204)
+      .json({ success: true, msg: `No food item ` });
+  }
+  
+  res
+  .status(200)
+  .json({ success: true, foodData: foodData });
+  
+}
+catch(err){
+  res.status(500).json({ success: false, msg: "Intenal error" });
+}
+}
+
+module.exports = { addFood, getFood, getAllFood, deleteFood, searchFood };
